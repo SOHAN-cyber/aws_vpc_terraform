@@ -8,7 +8,7 @@ resource "aws_vpc" "my-vpc" {
 }
 
 resource "aws_internet_gateway" "my-gateway" {
-  vpc_id = aws_vpc.my-vpc.id
+  vpc_id = aws_vpc.my-vpc.id 
 
   tags = {
     Name = "my-gateway"
@@ -65,7 +65,7 @@ resource "aws_route_table" "public-route-table" {
   }
 }
 
-resource "aws_route_table_association" "public-route" {
+resource "aws_route_table_association" "rt-route" {
   count = length(aws_subnet.public_subnet.*.id)
   route_table_id = aws_route_table.public-route-table.id
   subnet_id = element(aws_subnet.public_subnet.*.id, count.index)
@@ -90,13 +90,14 @@ resource "aws_eip" "elastic_ip" {
   }
 }
 
-resource "aws_nat_gateway" "my-nat" {         
-  allocation_id = aws_eip.elastic_ip.id
-  subnet_id = aws_subnet.public_subnet[0].id
-  tags = {
-    Name = "my-nat"
+  resource "aws_nat_gateway" "my-nat" {         
+    allocation_id = aws_eip.elastic_ip.id
+    subnet_id = aws_subnet.public_subnet[0].id
+    connectivity_type = "public"
+    tags = {
+      Name = "my-nat"
+    }
   }
-}
 
 resource "aws_route_table" "private-route-table" {
   vpc_id = aws_vpc.my-vpc.id
