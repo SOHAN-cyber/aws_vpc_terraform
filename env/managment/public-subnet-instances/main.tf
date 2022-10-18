@@ -46,26 +46,3 @@ resource "aws_key_pair" "jump-server-key" {
   key_name   = "jump-server-key"
   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDCdyTGbPrkbHYOWBQd9qOKGoh2DRM0crNURmnOy+sOPBKaj37gUScS1H21P+ICuFxVLyinzBLAWw3qP7W7NTGCd8FTP9ZQfRlFVv4CkrZ8adjnr742kyh453Z4BNG7XQjcgfh7TmEtX9qYblxUzhWF0F03G3rATyPOcOkOasdgfLq3jhEfyok4eCdoAaf656lo2smHvd8Th50OLZ7Hi+KkbI5EssqEuu2lz0qJiiy1S+C9zFEcg5X43ZLv0WcTytOq2G0bVFx8YxaA5TKZ+32brOhFhLJ1qwzcX9OaLSZ3PeizFhZq3kx0hN8/RiHLbO+QmYJCcSjHndOHoFGub5biyvAY+PzbitsFjGmo7zJEyK09RMsmO+rgtot/GJ4e4qx6L2VkKAHQ7DYDw0ZTA0JXJnYXna7e5QJsxXuHofNkZPnPIQJ0tinRodIIWIPCxH3JmvNuPmebPwhe6I3DyQ/IrOTnYd2LYt7jNIdciviGWXkbjKdpbE1/5/w4nvSQFDE= opstree@opstree-Latitude-3420"
 }
-
-resource "aws_instance" "private-server" {
-  count                   = var.instance_count
-  ami                     = var.ami
-  instance_type           = var.instance_type
-  subnet_id               = data.terraform_remote_state.vpc.outputs.public_subnet[0]
-  disable_api_stop        = false
-  key_name                = aws_key_pair.jump-server-key.key_name
-  vpc_security_group_ids  = [aws_security_group.jump-server.id]
-  disable_api_termination = false
-  root_block_device {
-    volume_size           = "30"
-    volume_type           = "gp2"
-    encrypted             = false
-    delete_on_termination = false
-    tags = {
-      Name = "my-jump-server-ebs"
-    }
-  }
-  tags = {
-    "Name" = "private-server"
-  }
-}
