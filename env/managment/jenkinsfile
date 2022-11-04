@@ -15,7 +15,7 @@ pipeline{
                 sh 'pwd'
                 sh 'echo $WORKSPACE'
                 sh 'ls'
-                sh 'sudo chmod 777 /var/run/docker/sock'
+                sh 'sudo chmod 777 /var/run/docker.sock'
      sh "docker run  --rm -v ${WORKSPACE}/env/managment/network/:/workdir -w /workdir   hashicorp/terraform:1.2.2 init"
      sh "docker run  --rm -v ${WORKSPACE}/env/managment/network/:/workdir -w /workdir   hashicorp/terraform:1.2.2 validate"
      sh "docker run  --rm -v ${WORKSPACE}/env/managment/network/:/workdir -w /workdir  hashicorp/terraform:1.2.2  plan" 
