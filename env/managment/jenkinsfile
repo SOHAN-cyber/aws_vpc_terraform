@@ -1,5 +1,9 @@
 pipeline{
     agent any
+                       environment {
+                       AWS_ACCESS_KEY_ID = credentials('100')
+                       AWS_SECRET_ACCESS_KEY = credentials('100')
+                    }
   tools {
   terraform 'terraform'
 }
@@ -16,10 +20,10 @@ pipeline{
                 sh 'echo $WORKSPACE'
                 sh 'ls'
                 sh 'sudo chmod 777 /var/run/docker.sock'
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/network/:/workdir -w /workdir   hashicorp/terraform:1.2.2 init"
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/network/:/workdir -w /workdir   hashicorp/terraform:1.2.2 validate"
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/network/:/workdir -w /workdir  hashicorp/terraform:1.2.2  plan" 
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/network/:/workdir -w /workdir  hashicorp/terraform:1.2.2  apply --auto-approve"
+     sh "docker run  --rm -v ${WORKSPACE}/env/managment/network/:/workdir -w /workdir   hashicorp/terraform:1.2.2 -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY init"
+     sh "docker run  --rm -v ${WORKSPACE}/env/managment/network/:/workdir -w /workdir   hashicorp/terraform:1.2.2 -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY validate"
+     sh "docker run  --rm -v ${WORKSPACE}/env/managment/network/:/workdir -w /workdir  hashicorp/terraform:1.2.2 -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY  plan" 
+     sh "docker run  --rm -v ${WORKSPACE}/env/managment/network/:/workdir -w /workdir  hashicorp/terraform:1.2.2 -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY apply --auto-approve"
                 }
             }
             post{
