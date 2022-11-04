@@ -4,6 +4,11 @@ pipeline{
   terraform 'terraform'
 }
     stages{
+    stage ('Cloning') {
+    steps {
+    git credentialsId: '80', url: 'https://github.com/SOHAN-cyber/aws_vpc_terraform.git'
+    }
+    }
         stage("Deploying  Infra"){
             steps{
                 dir('network') {
