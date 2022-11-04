@@ -15,10 +15,10 @@ pipeline{
                 sh 'pwd'
                 sh 'echo $WORKSPACE'
                 sh 'ls'
-     sh "docker run  --rm -v ${WORKSPACE}/${dir}:/workdir -w /workdir   hashicorp/terraform:1.2.2 init"
-     sh "docker run  --rm -v ${WORKSPACE}/${dir}:/workdir -w /workdir   hashicorp/terraform:1.2.2 validate"
-     sh "docker run  --rm -v ${WORKSPACE}/${dir}:/workdir -w /workdir  hashicorp/terraform:1.2.2  plan" 
-     sh "docker run  --rm -v ${WORKSPACE}/${dir}:/workdir -w /workdir  hashicorp/terraform:1.2.2  apply --auto-approve"
+     sh "docker run  --rm -v ${WORKSPACE}/env/managment/network/:/workdir -w /workdir   hashicorp/terraform:1.2.2 init"
+     sh "docker run  --rm -v ${WORKSPACE}/env/managment/network/:/workdir -w /workdir   hashicorp/terraform:1.2.2 validate"
+     sh "docker run  --rm -v ${WORKSPACE}/env/managment/network/:/workdir -w /workdir  hashicorp/terraform:1.2.2  plan" 
+     sh "docker run  --rm -v ${WORKSPACE}/env/managment/network/:/workdir -w /workdir  hashicorp/terraform:1.2.2  apply --auto-approve"
                 }
             }
             post{
