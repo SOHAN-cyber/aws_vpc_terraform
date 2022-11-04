@@ -9,9 +9,10 @@ pipeline{
                 dir('network') {
                 sh 'pwd'
                 sh 'ls'
-                sh 'terraform init'
-                sh 'terraform fmt'
-                sh 'terraform apply pwd--auto-approve'
+     sh "docker run  --rm -v ${WORKSPACE}/${dir}:/workdir -w /workdir   hashicorp/terraform:1.2.2 init"
+     sh "docker run  --rm -v ${WORKSPACE}/${dir}:/workdir -w /workdir   hashicorp/terraform:1.2.2 validate"
+     sh "docker run  --rm -v ${WORKSPACE}/${dir}:/workdir -w /workdir  hashicorp/terraform:1.2.2  plan" 
+     sh "docker run  --rm -v ${WORKSPACE}/${dir}:/workdir -w /workdir  hashicorp/terraform:1.2.2  apply --auto-approve"
                 }
             }
             post{
