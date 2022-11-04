@@ -11,7 +11,7 @@ pipeline{
     }
         stage("Deploying  Infra"){
             steps{
-                dir('network') {
+                dir('infra-creation/env/managment/network/') {
                 sh 'pwd'
                 sh 'ls'
      sh "docker run  --rm -v ${WORKSPACE}/${dir}:/workdir -w /workdir   hashicorp/terraform:1.2.2 init"
