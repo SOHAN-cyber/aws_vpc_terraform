@@ -13,7 +13,7 @@ variable "instance_type" {
 variable "instance_count" {
   description = "How many instance do you want"
   type        = number
-  default     = 6
+  default     = 1
 }
 
 variable "associate_public_ip_address" {
