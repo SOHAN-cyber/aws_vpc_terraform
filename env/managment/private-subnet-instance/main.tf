@@ -73,3 +73,9 @@ resource "aws_lb_target_group" "private-subnet-instance" {
     enabled             = true
   }
 }
+
+resource "aws_lb_target_group_attachment" "private-subnet" {
+  target_group_arn = aws_lb_target_group.private-subnet-instance.arn
+  target_id        = aws_instance.private-server.id
+  port             = 80
+}
