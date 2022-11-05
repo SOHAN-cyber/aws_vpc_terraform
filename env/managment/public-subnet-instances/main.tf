@@ -16,7 +16,7 @@ resource "aws_instance" "jump-server" {
     }
   }
   tags = {
-    "Name" = "jump-server"
+    "Name" = "public-subnet-server"
   }
 provisioner "file" {
 source = "./script.sh"   #this is the source for copying the file 

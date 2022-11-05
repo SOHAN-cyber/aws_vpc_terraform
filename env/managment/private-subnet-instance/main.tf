@@ -18,7 +18,7 @@ resource "aws_instance" "private-server" {
     }
   }
   tags = {
-    "Name" = "jump-server"
+    "Name" = "private-subnet-server"
   }
 }
 
