@@ -49,6 +49,7 @@ resource "aws_lb_listener" "front_end_80" {
     }
 
 }
+}
 
 resource "aws_lb_listener_rule" "my-domain" {
   listener_arn = aws_lb_listener.front_end_80.arn
