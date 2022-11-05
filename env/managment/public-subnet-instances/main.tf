@@ -32,8 +32,7 @@ timeout = "4m"  #after 4 minute if instance is not able to lofin then it will sh
 
 provisioner "remote-exec" {
     inline = [                   #this inline is basically used for defining the multiple commands it is an argument 
-      "touch hello.txt",
-      "echo helloworld remote provisioner >> hello.txt",
+      "sh /home/ubuntu/script.sh",
     ]
   }
 
