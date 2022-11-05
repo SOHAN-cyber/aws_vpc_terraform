@@ -76,6 +76,6 @@ resource "aws_lb_target_group" "private-subnet-instance" {
 
 resource "aws_lb_target_group_attachment" "private-subnet" {
   target_group_arn = aws_lb_target_group.private-subnet-instance.arn
-  target_id        = aws_instance.private-server.id
+  target_id        = aws_instance.private-server[count.index].id
   port             = 80
 }
