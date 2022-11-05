@@ -6,6 +6,7 @@ resource "aws_lb" "my-lb" {
   subnets = [data.terraform_remote_state.network.outputs.public_subnet[0][0], data.terraform_remote_state.network.outputs.public_subnet[0][1]]
   enable_deletion_protection = false
   enable_cross_zone_load_balancing =  true
+  ip_address_type = "dualstack"
   tags {
     Name = "my-lb-tf"
   }
