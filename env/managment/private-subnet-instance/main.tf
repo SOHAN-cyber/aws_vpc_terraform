@@ -20,6 +20,18 @@ resource "aws_instance" "private-server" {
   tags = {
     "Name" = "jump-server"
   }
+  provisioner "file" {
+source = "./script.sh"   #this is the source for copying the file 
+destination = "/home/ubuntu/script.sh"   #this is for destion of file to be copied
+}
+
+connection {
+type = "ssh"
+user = "ec2-user"
+host = aws_instance.app-server.public_ip  #this is for login into the instance app-server
+private_key = file("../private-subnet")   #this is the location for the key of the instance
+timeout = "4m"  #after 4 minute if instance is not able to lofin then it will show timeout error
+}
 }
 
 resource "aws_security_group" "private-server" {
@@ -30,6 +42,13 @@ resource "aws_security_group" "private-server" {
     description = "SSH from my ip"
     from_port   = 22
     to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["13.126.164.201/32"]
+  }
+    ingress {
+    description = "SSH from my ip"
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["13.126.164.201/32"]
   }
@@ -46,5 +65,5 @@ resource "aws_security_group" "private-server" {
 
 resource "aws_key_pair" "private-server-key" {
   key_name   = "private-server-key"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDCdyTGbPrkbHYOWBQd9qOKGoh2DRM0crNURmnOy+sOPBKaj37gUScS1H21P+ICuFxVLyinzBLAWw3qP7W7NTGCd8FTP9ZQfRlFVv4CkrZ8adjnr742kyh453Z4BNG7XQjcgfh7TmEtX9qYblxUzhWF0F03G3rATyPOcOkOasdgfLq3jhEfyok4eCdoAaf656lo2smHvd8Th50OLZ7Hi+KkbI5EssqEuu2lz0qJiiy1S+C9zFEcg5X43ZLv0WcTytOq2G0bVFx8YxaA5TKZ+32brOhFhLJ1qwzcX9OaLSZ3PeizFhZq3kx0hN8/RiHLbO+QmYJCcSjHndOHoFGub5biyvAY+PzbitsFjGmo7zJEyK09RMsmO+rgtot/GJ4e4qx6L2VkKAHQ7DYDw0ZTA0JXJnYXna7e5QJsxXuHofNkZPnPIQJ0tinRodIIWIPCxH3JmvNuPmebPwhe6I3DyQ/IrOTnYd2LYt7jNIdciviGWXkbjKdpbE1/5/w4nvSQFDE= opstree@opstree-Latitude-3420"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDfMniuHl2Vb58jAN7WU0fXo2VADj1BGyj6W/NVNx10lPJ662uLRvHNuxaxZ7JXa68Zy3UCSIMPsNusoT4yw/4H+h970mULtkF8zpINY8QiHVuCEsSQbUt2dpyexIwWtz+freTwst+5id4tlMIzuM/e9SVjnOa7EuVqhfL23buEzGPux+SF1W/96q1bGBN3BQ2/wUb8ZRm3p34mcVT125V2MYZe497n9r8BGxE32ExbfzhhT2pPZSsyejHneQdeLKI7eV1L3rHLlyLD1NzI5+MuHwqfimAcqNivRxwHJSD49JymZbBUunlg+6MzbFwYs2CwZT1eLtIFimnIN/WICJbID1WtYQpK08nLfh5FT8995Bm36vZ6scGvg7MPnZa+HxCtpQj3bbUCm+7giOEIvh6hf813f6W1uNO/mb4eOJzIwd93wqs9tlXwZFIiD+DfAyvziN2strb++r/elwASINSyi2rd0op2b2mQhQtzQRss/Q3CDmWvABluRCjAtjRVle0= opstree@opstree-Latitude-3420"
 }
