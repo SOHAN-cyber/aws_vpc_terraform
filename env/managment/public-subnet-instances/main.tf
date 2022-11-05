@@ -18,10 +18,24 @@ resource "aws_instance" "jump-server" {
   tags = {
     "Name" = "jump-server"
   }
-    provisioner "file" {
+provisioner "file" {
 source = "./script.sh"   #this is the source for copying the file 
 destination = "/home/ubuntu/script.sh"   #this is for destion of file to be copied
 }
+connection {
+type = "ssh"
+user = "ubuntu"
+host = aws_instance.jump-server.public_ip  #this is for login into the instance app-server
+private_key = file("./private-subnet")   #this is the location for the key of the instance
+timeout = "4m"  #after 4 minute if instance is not able to lofin then it will show timeout error
+}
+
+provisioner "remote-exec" {
+    inline = [                   #this inline is basically used for defining the multiple commands it is an argument 
+      "touch hello.txt",
+      "echo helloworld remote provisioner >> hello.txt",
+    ]
+  }
 
 connection {
 type = "ssh"
