@@ -33,7 +33,7 @@ resource "aws_security_group" "private-server" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-    ingress {
+  ingress {
     description = "HTTP port"
     from_port   = 80
     to_port     = 80
@@ -75,6 +75,7 @@ resource "aws_lb_target_group" "private-subnet-instance" {
 }
 
 resource "aws_lb_target_group_attachment" "private-subnet" {
+  count            = var.instance_count
   target_group_arn = aws_lb_target_group.private-subnet-instance.arn
   target_id        = aws_instance.private-server[count.index].id
   port             = 80
