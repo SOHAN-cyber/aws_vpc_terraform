@@ -18,7 +18,7 @@ data "terraform_remote_state" "public-subnet-instance" {
 
 data "terraform_remote_state" "private-subnet-instance" {
   backend = "s3"
-  config {
+  config = {
     bucket = "dev-tf-states"
     key    = "env/management/private.tfstate"
     region = "ap-south-1"
