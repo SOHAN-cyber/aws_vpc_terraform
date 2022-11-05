@@ -12,7 +12,7 @@ resource "aws_lb" "my-lb" {
 }
 
 resource "aws_security_group" "alb" {
-  name   = "jump-server-sg"
+  name   = "alb-server-sg"
   vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
       ingress {
     description = "HTTP port"
