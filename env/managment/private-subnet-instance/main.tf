@@ -28,7 +28,7 @@ destination = "/home/ubuntu/script.sh"   #this is for destion of file to be copi
 connection {
 type = "ssh"
 user = "ec2-user"
-host = aws_instance.private-server.public_ip  #this is for login into the instance app-server
+host = aws_instance.private-server[count.index].public_ip  #this is for login into the instance app-server
 private_key = file("../private-subnet")   #this is the location for the key of the instance
 timeout = "4m"  #after 4 minute if instance is not able to lofin then it will show timeout error
 }
