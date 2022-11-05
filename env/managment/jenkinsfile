@@ -41,7 +41,7 @@ pipeline{
             }
        }
      }
-     stage ('Deploying & provisioning Private subnet instances') {
+     stage ('Deploying & provisioning Public subnet instances') {
         steps{
             dir('env/managment/public-subnet-instances') {
              sh 'pwd'
