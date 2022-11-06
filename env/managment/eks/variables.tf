@@ -19,7 +19,7 @@ variable "endpoint_private_access" {
 variable "endpoint_public_access" {
   description = "Do you want to enable private access endpoint"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "aws_eks_iam_role" {

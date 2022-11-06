@@ -19,11 +19,9 @@ pipeline{
                 sh 'pwd'
                 sh 'echo $WORKSPACE'
                 sh 'ls'
+                sh 'echo $dir'
                 sh 'sudo chmod 777 /var/run/docker.sock'
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/network/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY    hashicorp/terraform:1.2.2 init"
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/network/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY   hashicorp/terraform:1.2.2 validate"
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/network/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY  hashicorp/terraform:1.2.2  plan" 
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/network/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY  hashicorp/terraform:1.2.2 apply --auto-approve"
+                    task(${pwd})
                 }
             }
         }
@@ -34,10 +32,7 @@ pipeline{
                 sh 'echo $WORKSPACE'
                 sh 'ls'
                 sh 'sudo chmod 777 /var/run/docker.sock'
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/public-subnet-instances:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY    hashicorp/terraform:1.2.2 init"
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/public-subnet-instances:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY   hashicorp/terraform:1.2.2 validate"
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/public-subnet-instances:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY  hashicorp/terraform:1.2.2  plan" 
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/public-subnet-instances:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY  hashicorp/terraform:1.2.2 apply --auto-approve"
+                task(${pwd})
             }
        }
      }
@@ -48,10 +43,7 @@ pipeline{
                 sh 'echo $WORKSPACE'
                 sh 'ls'
                 sh 'sudo chmod 777 /var/run/docker.sock'
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/private-subnet-instance/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY    hashicorp/terraform:1.2.2 init"
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/private-subnet-instance/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY   hashicorp/terraform:1.2.2 validate"
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/private-subnet-instance/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY  hashicorp/terraform:1.2.2  plan" 
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/private-subnet-instance/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY  hashicorp/terraform:1.2.2 apply --auto-approve"
+                task(${pwd})
             }
        }
      }
@@ -62,10 +54,7 @@ pipeline{
                 sh 'echo $WORKSPACE'
                 sh 'ls'
                 sh 'sudo chmod 777 /var/run/docker.sock'
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/alb/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY    hashicorp/terraform:1.2.2 init"
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/alb/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY   hashicorp/terraform:1.2.2 validate"
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/alb/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY  hashicorp/terraform:1.2.2  plan" 
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/alb/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY  hashicorp/terraform:1.2.2 apply --auto-approve"
+                task(${pwd})
             }
        }
      }
@@ -75,13 +64,15 @@ pipeline{
              sh 'pwd'
                 sh 'echo $WORKSPACE'
                 sh 'ls'
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/eks/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY    hashicorp/terraform:1.2.2 init"
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/eks/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY   hashicorp/terraform:1.2.2 validate"
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/eks/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY  hashicorp/terraform:1.2.2  plan" 
-     sh "docker run  --rm -v ${WORKSPACE}/env/managment/eks/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY  hashicorp/terraform:1.2.2 apply --auto-approve"
+                task(${pwd})
      sh 'aws eks update-kubeconfig --name tf-eks-cluster --region ap-south-1'
             }
        }
+     }
+     stage ("Deploying App in new eks cluster") {
+        steps {
+            build job: 'nodejs-pipeline'
+        }
      }
 }
             post{
@@ -96,3 +87,9 @@ pipeline{
                 }
             }
         }
+void task(dir) {
+     sh "docker run  --rm -v ${WORKSPACE}/${dir}:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY    hashicorp/terraform:1.2.2 init"
+     sh "docker run  --rm -v ${WORKSPACE}/${dir}:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY   hashicorp/terraform:1.2.2 validate"
+     sh "docker run  --rm -v ${WORKSPACE}/${dir}:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY  hashicorp/terraform:1.2.2  plan" 
+     sh "docker run  --rm -v ${WORKSPACE}/${dir}:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY  hashicorp/terraform:1.2.2 apply --auto-approve"
+}
