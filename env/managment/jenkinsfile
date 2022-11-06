@@ -69,7 +69,19 @@ pipeline{
             }
        }
      }
-
+    stage ('Deploying & provisioning eks cluster') {
+        steps{
+            dir('env/managment/eks/') {
+             sh 'pwd'
+                sh 'echo $WORKSPACE'
+                sh 'ls'
+     sh "docker run  --rm -v ${WORKSPACE}/env/managment/eks/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY    hashicorp/terraform:1.2.2 init"
+     sh "docker run  --rm -v ${WORKSPACE}/env/managment/eks/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY   hashicorp/terraform:1.2.2 validate"
+     sh "docker run  --rm -v ${WORKSPACE}/env/managment/eks/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY  hashicorp/terraform:1.2.2  plan" 
+     sh "docker run  --rm -v ${WORKSPACE}/env/managment/eks/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY  hashicorp/terraform:1.2.2 apply --auto-approve"
+            }
+       }
+     }
 }
             post{
                 always{

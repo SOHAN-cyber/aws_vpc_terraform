@@ -5,14 +5,14 @@ resource "awk_eks_cluster" "eks-cluster-new" {
   tags = {
     Name = "eks-cluster-tf"
   }
-  depends_on  = [
-     aws_iam_role_policy_attachment.example-AmazonEKSClusterPolicy,
-    aws_iam_role_policy_attachment.example-AmazonEKSVPCResourceController,
-  ]
     vpc_config {
     subnet_ids = [data.terraform_remote_state.vpc.outputs.public_subnet[0], data.terraform_remote_state.vpc.outputs.public_subnet[1]]
     endpoint_public_access = true
   }
+    depends_on  = [
+     aws_iam_role_policy_attachment.example-AmazonEKSClusterPolicy,
+    aws_iam_role_policy_attachment.example-AmazonEKSVPCResourceController,
+  ]
 }
 
 resource "aws_iam_role" "eks_cluster" {
