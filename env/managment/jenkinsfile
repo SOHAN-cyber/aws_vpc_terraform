@@ -21,7 +21,7 @@ pipeline{
                 sh 'ls'
                 sh 'echo $dir'
                 sh 'sudo chmod 777 /var/run/docker.sock'
-                    task("${pwd}")
+                    task("env/managment/network/")
                 }
             }
         }
@@ -32,7 +32,7 @@ pipeline{
                 sh 'echo $WORKSPACE'
                 sh 'ls'
                 sh 'sudo chmod 777 /var/run/docker.sock'
-                task("${pwd}")
+                task("env/managment/public-subnet-instances")
             }
        }
      }
@@ -43,7 +43,7 @@ pipeline{
                 sh 'echo $WORKSPACE'
                 sh 'ls'
                 sh 'sudo chmod 777 /var/run/docker.sock'
-                task("${pwd}")
+                task("env/managment/private-subnet-instance/")
             }
        }
      }
@@ -54,7 +54,7 @@ pipeline{
                 sh 'echo $WORKSPACE'
                 sh 'ls'
                 sh 'sudo chmod 777 /var/run/docker.sock'
-                task("${pwd}")
+                task("env/managment/alb/")
             }
        }
      }
@@ -64,7 +64,7 @@ pipeline{
              sh 'pwd'
                 sh 'echo $WORKSPACE'
                 sh 'ls'
-                task("${pwd}")
+                task("env/managment/eks/")
      sh 'aws eks update-kubeconfig --name tf-eks-cluster --region ap-south-1'
             }
        }
