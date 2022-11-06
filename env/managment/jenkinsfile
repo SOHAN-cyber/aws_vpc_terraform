@@ -47,6 +47,8 @@ pipeline{
                 task("env/managment/eks/")
      sh 'aws eks update-kubeconfig --name tf-eks-cluster --region ap-south-1'
      sh 'kubectl get nodes'
+     sh 'kubectl get deployment'
+     sh 'kubectl get svc'
             }
        }
      }
@@ -69,6 +71,7 @@ pipeline{
             }
         }
 void task(dir) {
+     sh "docker run  --rm -v ${WORKSPACE}/${dir}:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY    hashicorp/terraform:1.2.2 destroy"
      sh "docker run  --rm -v ${WORKSPACE}/${dir}:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY    hashicorp/terraform:1.2.2 init"
      sh "docker run  --rm -v ${WORKSPACE}/${dir}:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY   hashicorp/terraform:1.2.2 validate"
      sh "docker run  --rm -v ${WORKSPACE}/${dir}:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY  hashicorp/terraform:1.2.2  plan" 
