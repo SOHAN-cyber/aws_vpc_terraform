@@ -46,6 +46,7 @@ pipeline{
             dir('env/managment/eks/') {
                 task("env/managment/eks/")
      sh 'aws eks update-kubeconfig --name tf-eks-cluster --region ap-south-1'
+     sh 'kubectl get nodes'
             }
        }
      }
