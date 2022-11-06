@@ -79,6 +79,7 @@ pipeline{
      sh "docker run  --rm -v ${WORKSPACE}/env/managment/eks/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY   hashicorp/terraform:1.2.2 validate"
      sh "docker run  --rm -v ${WORKSPACE}/env/managment/eks/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY  hashicorp/terraform:1.2.2  plan" 
      sh "docker run  --rm -v ${WORKSPACE}/env/managment/eks/:/workdir -w /workdir -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY  hashicorp/terraform:1.2.2 apply --auto-approve"
+     sh 'aws eks update-kubeconfig --name tf-eks-cluster --region ap-south-1'
             }
        }
      }

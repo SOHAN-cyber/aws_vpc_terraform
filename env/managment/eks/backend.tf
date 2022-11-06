@@ -38,9 +38,7 @@ data "terraform_remote_state" "alb" {
 terraform {
   backend "s3" {
     bucket = "dev-tf-states"
-    key    = "env/management/eks.tfstate"
+    key    = "env/management/tf_eks.tfstate"
     region = "ap-south-1"
   }
 }
-
-
